@@ -5,7 +5,11 @@ module uk.ac.soton.comp1206 {
     requires javafx.media;
     requires org.apache.logging.log4j;
     requires nv.websocket.client;
-    opens uk.ac.soton.comp1206.ui to javafx.fxml;
+//    requires opens uk.ac.soton.comp1206.ui to javafx.fxml;
+    requires Java.WebSocket;
+    requires java.sql;
+    requires sqlite.jdbc;
+    requires jdk.httpserver;
     exports uk.ac.soton.comp1206;
     exports uk.ac.soton.comp1206.ui;
     exports uk.ac.soton.comp1206.network;

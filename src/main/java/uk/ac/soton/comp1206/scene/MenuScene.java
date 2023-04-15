@@ -1,6 +1,7 @@
 package uk.ac.soton.comp1206.scene;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -49,8 +50,15 @@ public class MenuScene extends BaseScene {
         mainPane.setTop(title);
 
         //For now, let us just add a button that starts the game. I'm sure you'll do something way better.
+        VBox menuVBox = new VBox();
+        menuVBox.setAlignment(Pos.BOTTOM_CENTER);
         var button = new Button("Play");
-        mainPane.setCenter(button);
+        var buttonIntro = new Button("Introduction");
+        var buttonExit = new Button("Exit");
+        buttonIntro.setStyle("-fx-background-color: transparent;");
+        menuVBox.getChildren().addAll(button,buttonIntro,buttonExit);
+        mainPane.setCenter(menuVBox);
+        buttonIntro.setOnAction(this::startInto);
 
         //Bind the button action to the startGame method in the menu
         button.setOnAction(this::startGame);
@@ -70,6 +78,10 @@ public class MenuScene extends BaseScene {
      */
     private void startGame(ActionEvent event) {
         gameWindow.startChallenge();
+    }
+
+    private void startInto(ActionEvent event) {
+        gameWindow.loadScene(new IntroScene(gameWindow));
     }
 
 }

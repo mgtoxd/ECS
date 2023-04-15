@@ -31,6 +31,10 @@ public class Grid {
      */
     private final SimpleIntegerProperty[][] grid;
 
+    public SimpleIntegerProperty[][] getGrid() {
+        return grid;
+    }
+
     /**
      * Create a new Grid with the specified number of columns and rows and initialise them
      * @param cols number of columns

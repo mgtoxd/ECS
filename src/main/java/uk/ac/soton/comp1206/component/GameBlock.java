@@ -4,6 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +44,7 @@ public class GameBlock extends Canvas {
             Color.PURPLE
     };
 
-    private final GameBoard gameBoard;
+    private final GridPane gameBoard;
 
     private final double width;
     private final double height;
@@ -71,7 +72,7 @@ public class GameBlock extends Canvas {
      * @param width the width of the canvas to render
      * @param height the height of the canvas to render
      */
-    public GameBlock(GameBoard gameBoard, int x, int y, double width, double height) {
+    public GameBlock(GridPane gameBoard, int x, int y, double width, double height) {
         this.gameBoard = gameBoard;
         this.width = width;
         this.height = height;
@@ -122,7 +123,7 @@ public class GameBlock extends Canvas {
         gc.clearRect(0,0,width,height);
 
         //Fill
-        gc.setFill(Color.WHITE);
+        gc.setFill(Color.TRANSPARENT);
         gc.fillRect(0,0, width, height);
 
         //Border

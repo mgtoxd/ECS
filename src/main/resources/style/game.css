@@ -207,3 +207,6 @@ TextField {
     -fx-font-family: 'Orbitron';
     -fx-fill: white;
 }
+.testBtn:hover{
+    -fx-fill: yellow;
+}

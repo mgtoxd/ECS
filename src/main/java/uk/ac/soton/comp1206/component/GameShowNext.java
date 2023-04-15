@@ -5,21 +5,12 @@ import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp1206.event.BlockClickedListener;
+import uk.ac.soton.comp1206.game.GamePiece;
 import uk.ac.soton.comp1206.game.Grid;
 
-/**
- * A GameBoard is a visual component to represent the visual GameBoard.
- * It extends a GridPane to hold a grid of GameBlocks.
- *
- * The GameBoard can hold an internal grid of it's own, for example, for displaying an upcoming block. It also be
- * linked to an external grid, for the main game board.
- *
- * The GameBoard is only a visual representation and should not contain game logic or model logic in it, which should
- * take place in the Grid.
- */
-public class GameBoard extends GridPane {
+public class GameShowNext extends GridPane {
 
-    private static final Logger logger = LogManager.getLogger(GameBoard.class);
+    private static final Logger logger = LogManager.getLogger(GameShowNext.class);
 
     /**
      * Number of columns in the board
@@ -56,24 +47,6 @@ public class GameBoard extends GridPane {
      */
     private BlockClickedListener blockClickedListener;
 
-
-    /**
-     * Create a new GameBoard, based off a given grid, with a visual width and height.
-     * @param grid linked grid
-     * @param width the visual width
-     * @param height the visual height
-     */
-    public GameBoard(Grid grid, double width, double height) {
-        this.cols = grid.getCols();
-        this.rows = grid.getRows();
-        this.width = width;
-        this.height = height;
-        this.grid = grid;
-
-        //Build the GameBoard
-        build();
-    }
-
     /**
      * Create a new GameBoard with it's own internal grid, specifying the number of columns and rows, along with the
      * visual width and height.
@@ -83,7 +56,7 @@ public class GameBoard extends GridPane {
      * @param width the visual width
      * @param height the visual height
      */
-    public GameBoard(int cols, int rows, double width, double height) {
+    public GameShowNext(int cols, int rows, double width, double height) {
         this.cols = cols;
         this.rows = rows;
         this.width = width;
@@ -131,11 +104,10 @@ public class GameBoard extends GridPane {
      */
     protected GameBlock createBlock(int x, int y) {
         var blockWidth = width / cols;
-        var blockHeight = height / rows;
+        var blockHeight = height / rows+7;
 
         //Create a new GameBlock UI component
         GameBlock block = new GameBlock(this, x, y, blockWidth, blockHeight);
-
 
         //Add to the GridPane
         add(block,x,y);
@@ -173,4 +145,13 @@ public class GameBoard extends GridPane {
         }
     }
 
+    public void show(GamePiece currPiece) {
+        int[][] blocks1 = currPiece.getBlocks();
+        for (int i = 0; i < blocks1.length; i++) {
+            for (int j = 0; j < blocks1[i].length; j++) {
+                grid.set(j, i, blocks1[i][j]);
+            }
+        }
+        logger.info("Showing next piece");
+    }
 }

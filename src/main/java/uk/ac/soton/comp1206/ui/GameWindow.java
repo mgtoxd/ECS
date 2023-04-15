@@ -31,6 +31,8 @@ public class GameWindow {
     private BaseScene currentScene;
     private Scene scene;
 
+    private Scene intoductScene;
+
     final Communicator communicator;
 
     /**
@@ -55,8 +57,8 @@ public class GameWindow {
         setupDefaultScene();
 
         //Setup communicator
-        communicator = new Communicator("ws://ofb-labs.soton.ac.uk:9700");
-
+//        communicator = new Communicator("ws://localhost:8080");
+        communicator = null;
         //Go to menu
         startMenu();
     }
@@ -118,6 +120,7 @@ public class GameWindow {
      */
     public void setupDefaultScene() {
         this.scene = new Scene(new Pane(),width,height, Color.BLACK);
+        this.intoductScene = new Scene(new Pane(),width,height, Color.BLACK);
         stage.setScene(this.scene);
     }
 
@@ -126,7 +129,7 @@ public class GameWindow {
      */
     public void cleanup() {
         logger.info("Clearing up previous scene");
-        communicator.clearListeners();
+//        communicator.clearListeners();
     }
 
     /**

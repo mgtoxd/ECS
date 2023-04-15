@@ -126,7 +126,7 @@ public class GamePiece {
             }
         }
 
-        //Not a valid piece number
+//        Not a valid piece number
         throw new IndexOutOfBoundsException("No such piece: " + piece);
     }
 
