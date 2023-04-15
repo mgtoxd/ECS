@@ -6,7 +6,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -246,7 +248,7 @@ public class ChallengeScene extends BaseScene {
                 game.reduceLife();
                 if (game.getLife() == 0) {
                     Platform.runLater(() -> {
-                        gameWindow.loadScene(new GameOverScene(gameWindow, 100));
+                        gameWindow.loadScene(new GameOverScene(gameWindow, game.score.get()));
                     });
                 }else {
                     countTime = 5000;

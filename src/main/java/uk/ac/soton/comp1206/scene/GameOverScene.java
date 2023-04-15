@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -17,13 +16,15 @@ import uk.ac.soton.comp1206.ui.GamePane;
 import uk.ac.soton.comp1206.ui.GameWindow;
 
 public class GameOverScene extends BaseScene {
-    public GameOverScene(GameWindow gameWindow, Object score) {
-        super(gameWindow);
-    }
+    private Integer score;
 
 
     private static final Logger logger = LogManager.getLogger(IntroScene.class);
 
+    public GameOverScene(GameWindow gameWindow, Integer score) {
+        super(gameWindow);
+        this.score = score;
+    }
 
     /**
      * Build the Challenge window
@@ -32,9 +33,9 @@ public class GameOverScene extends BaseScene {
     public void build() {
         logger.info("Building " + this.getClass().getName());
 
-        root = new GamePane(gameWindow.getWidth(),gameWindow.getHeight());
+        root = new GamePane(gameWindow.getWidth(), gameWindow.getHeight());
 
-        BorderPane borderPane =new BorderPane();
+        BorderPane borderPane = new BorderPane();
         borderPane.setMaxWidth(gameWindow.getWidth());
         borderPane.setMaxHeight(gameWindow.getHeight());
         borderPane.getStyleClass().add("menu-background");
@@ -45,6 +46,10 @@ public class GameOverScene extends BaseScene {
         text.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
         text.setFill(Color.WHITE);
 
+        Text scoreText = new Text("your Score:" + score);
+        scoreText.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
+        scoreText.setFill(Color.WHITE);
+
         TextField notification = new TextField("YOUR NAME");
         notification.setMaxWidth(200);
 
@@ -53,7 +58,7 @@ public class GameOverScene extends BaseScene {
 
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(notification,text,sendScoreBtn);
+        vBox.getChildren().addAll(notification, text, scoreText, sendScoreBtn);
         vBox.setAlignment(Pos.CENTER);
 
         borderPane.setCenter(vBox);
