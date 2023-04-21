@@ -207,6 +207,12 @@ TextField {
     -fx-font-family: 'Orbitron';
     -fx-fill: white;
 }
-.testBtn:hover{
+.testBtn:hover {
     -fx-fill: yellow;
+}
+
+.transparent-list-view {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
 }

@@ -3,7 +3,9 @@ package uk.ac.soton.comp1206.scene;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,14 +56,26 @@ public class MenuScene extends BaseScene {
         menuVBox.setAlignment(Pos.BOTTOM_CENTER);
         var button = new Button("Play");
         var buttonIntro = new Button("Introduction");
+        var buttonScoreList = new Button("ScoreList");
         var buttonExit = new Button("Exit");
+        var buttonMutiGame = new Button("MutiGame");
         buttonIntro.setStyle("-fx-background-color: transparent;");
-        menuVBox.getChildren().addAll(button,buttonIntro,buttonExit);
+        menuVBox.getChildren().addAll(button, buttonIntro, buttonExit, buttonScoreList, buttonMutiGame);
         mainPane.setCenter(menuVBox);
         buttonIntro.setOnAction(this::startInto);
+        buttonScoreList.setOnAction(this::startScoreList);
+        buttonMutiGame.setOnAction(this::startMutiGame);
 
         //Bind the button action to the startGame method in the menu
         button.setOnAction(this::startGame);
+    }
+
+    private void startMutiGame(ActionEvent actionEvent) {
+        gameWindow.loadScene(new MulityScene(gameWindow));
+    }
+
+    private void startScoreList(ActionEvent actionEvent) {
+        gameWindow.loadScene(new RankingListScene(gameWindow));
     }
 
     /**

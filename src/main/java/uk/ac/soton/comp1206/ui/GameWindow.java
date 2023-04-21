@@ -10,7 +10,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp1206.App;
 import uk.ac.soton.comp1206.network.Communicator;
-import uk.ac.soton.comp1206.scene.*;
+import uk.ac.soton.comp1206.scene.BaseScene;
+import uk.ac.soton.comp1206.scene.ChallengeScene;
+import uk.ac.soton.comp1206.scene.MenuScene;
 
 /**
  * The GameWindow is the single window for the game where everything takes place. To move between screens in the game,
@@ -57,8 +59,17 @@ public class GameWindow {
         setupDefaultScene();
 
         //Setup communicator
+//        communicator = null;
 //        communicator = new Communicator("ws://localhost:8080");
-        communicator = null;
+        communicator = new Communicator("ws://ofb-labs.soton.ac.uk:9700");
+
+//        communicator.addListener(new CommunicationsListener() {
+//            @Override
+//            public void receiveCommunication(String communication) {
+//                logger.info("wdadwadawdawd :{}", communication);
+//            }
+//        });
+//        communicator.send("adadad");
         //Go to menu
         startMenu();
     }
