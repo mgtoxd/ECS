@@ -32,7 +32,7 @@ public class MulityPlayerScene extends BaseScene {
 
     private static final Logger logger = LogManager.getLogger(MenuScene.class);
     protected Game game;
-    private GamePiece currPiece, storePiece;
+    private GamePiece currPiece, storePiece, getPiece;
 
     private GameShowNext gameShowNext, gameShowStore;
 
@@ -94,9 +94,9 @@ public class MulityPlayerScene extends BaseScene {
 
         mainPane.setRight(vBox);
 
-        currPiece = GamePiece.createPiece(0);
+//        currPiece = GamePiece.createPiece(0);
+        getPieceFromServ();
 
-        gameShowNext.show(currPiece);
 
         VBox btns = new VBox();
         Button rote = CreateUtil.createRoundButton(10.0, Color.WHITE);
@@ -112,11 +112,8 @@ public class MulityPlayerScene extends BaseScene {
         time.setFill(Color.WHITE);
         mainPane.setBottom(time);
 
-        score = new Text();
-        score.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
-        score.setFill(Color.WHITE);
-        score.setText("SCORE:" + 0);
-        mainPane.setLeft(score);
+        VBox scoreVbox = new VBox();
+        mainPane.setLeft(scoreVbox);
 
 
         life = new Text();
@@ -141,6 +138,52 @@ public class MulityPlayerScene extends BaseScene {
         rote.setOnMouseClicked(this::roteClicked);
         storage.setOnMouseClicked(this::storageClicked);
 
+
+        this.gameWindow.getCommunicator().addListener(res -> {
+            if (res.startsWith("PIECE ")) {
+                logger.info("get piece from serv");
+                res = res.replaceFirst("PIECE ", "");
+                currPiece = GamePiece.createPiece(Integer.parseInt(res));
+                gameShowNext.show(currPiece);
+            }
+        });
+
+        this.gameWindow.getCommunicator().addListener(res -> {
+            if (res.startsWith("SCORES ")) {
+                logger.info("get SCORES from serv");
+                res = res.replaceFirst("SCORES ", "");
+                String finalRes = res;
+                Platform.runLater(() -> {
+                    scoreVbox.getChildren().clear();
+                    String[] scores = finalRes.split("\\n");
+                    for (String score : scores) {
+                        Text text = new Text();
+                        text.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
+                        text.setFill(Color.WHITE);
+                        text.setText(score);
+                        scoreVbox.getChildren().add(text);
+                    }
+                });
+                gameShowNext.show(currPiece);
+            }
+        });
+
+
+        this.game.score.addListener((observable, oldValue, newValue) -> {
+            this.gameWindow.getCommunicator().send("SCORE " + newValue);
+        });
+
+        Thread t = new Thread(() -> {
+            // run方法具体重写
+            this.gameWindow.getCommunicator().send("SCORES");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        t.start();
+
     }
 
     // 鼠标悬浮
@@ -156,11 +199,14 @@ public class MulityPlayerScene extends BaseScene {
         logger.info("storage");
         if (storePiece == null) {
             game.levelUp();
-            storePiece = GamePiece.createPiece(game.getCurrLevel());
+            storePiece = currPiece;
+            getPieceFromServ();
+        } else {
+            GamePiece temp = storePiece;
+            storePiece = currPiece;
+            currPiece = temp;
         }
-        GamePiece temp = storePiece;
-        storePiece = currPiece;
-        currPiece = temp;
+
         gameShowNext.show(currPiece);
         gameShowStore.show(storePiece);
     }
@@ -207,8 +253,9 @@ public class MulityPlayerScene extends BaseScene {
             // 放入后进入下一环节
             game.levelUp();
             // 刷新候选
-            currPiece = GamePiece.createPiece(game.getCurrLevel());
-            gameShowNext.show(currPiece);
+            getPieceFromServ();
+//            currPiece = GamePiece.createPiece(game.getCurrLevel());
+//            gameShowNext.show(currPiece);
             logger.info("can");
             // 查看有没有填满的消除
             game.checkLines();
@@ -239,8 +286,10 @@ public class MulityPlayerScene extends BaseScene {
                 System.out.println("Countdown finished!");
 
                 game.reduceLife();
+                gameWindow.getCommunicator().send("LIVES " + game.getLife());
                 if (game.getLife() == 0) {
                     Platform.runLater(() -> {
+                        gameWindow.getCommunicator().send("DIE");
                         gameWindow.loadScene(new GameOverScene(gameWindow, game.score.get()));
                     });
                 } else {
@@ -274,6 +323,10 @@ public class MulityPlayerScene extends BaseScene {
     public void initialise() {
         logger.info("Initialising Challenge");
         game.start();
+    }
+
+    public void getPieceFromServ() {
+        this.gameWindow.getCommunicator().send("PIECE");
     }
 
 }

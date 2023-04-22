@@ -18,6 +18,7 @@ import uk.ac.soton.comp1206.ui.GameWindow;
 public class GameOverScene extends BaseScene {
     private Integer score;
 
+    private TextField notification;
 
     private static final Logger logger = LogManager.getLogger(IntroScene.class);
 
@@ -50,7 +51,7 @@ public class GameOverScene extends BaseScene {
         scoreText.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
         scoreText.setFill(Color.WHITE);
 
-        TextField notification = new TextField("YOUR NAME");
+        notification = new TextField("YOUR NAME");
         notification.setMaxWidth(200);
 
         Button sendScoreBtn = new Button();
@@ -72,7 +73,7 @@ public class GameOverScene extends BaseScene {
      * @param actionEvent
      */
     private void sendScore(ActionEvent actionEvent) {
-
+        this.gameWindow.getCommunicator().send("HISCORE " + notification.getText() + ":" + score);
     }
 
 
