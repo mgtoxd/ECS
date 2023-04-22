@@ -2,6 +2,7 @@ package uk.ac.soton.comp1206.scene;
 
 import javafx.application.Platform;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,6 +16,7 @@ import uk.ac.soton.comp1206.ui.GamePane;
 import uk.ac.soton.comp1206.ui.GameWindow;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -53,6 +55,19 @@ public class MulityScene extends BaseScene {
         VBox vbox = new VBox();
         borderPane.setTop(vbox);
 
+        HBox btnHbox = new HBox();
+        TextArea roomName = new TextArea();
+        Button btn = new Button("Create Room");
+        AtomicBoolean host = new AtomicBoolean(false);
+
+
+        btn.setOnAction(event -> {
+            host.set(true);
+            gameWindow.getCommunicator().send("CREATE " + roomName.getText());
+        });
+        btnHbox.getChildren().addAll(roomName, btn);
+        borderPane.setBottom(btnHbox);
+
 
         gameWindow.getCommunicator().send("LIST");
 
@@ -86,6 +101,16 @@ public class MulityScene extends BaseScene {
         });
 
 
+        gameWindow.getCommunicator().addListener(communication -> {
+            if (communication.startsWith("JOIN")) {
+                String join = communication.replaceFirst("JOIN", "");
+                Platform.runLater(() -> {
+                    gameWindow.loadScene(new RoomScene(gameWindow, join, host.get()));
+                });
+            }
+        });
+
+
     }
 
     public void addText(VBox vBox, AtomicInteger count, String text) {
@@ -102,19 +127,7 @@ public class MulityScene extends BaseScene {
     }
 
     private void joinRoom(String text) {
-        gameWindow.getCommunicator().addListener(communication -> {
-            if (communication.startsWith("JOIN")) {
-                String join = communication.replaceFirst("JOIN", "");
-                Platform.runLater(() -> {
-                    gameWindow.loadScene(new RoomScene(gameWindow, join));
-                });
-            }
-        });
-
-
         gameWindow.getCommunicator().send("JOIN " + text);
-
-
     }
 
 
