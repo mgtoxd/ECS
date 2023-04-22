@@ -57,9 +57,12 @@ public class GameOverScene extends BaseScene {
         Button sendScoreBtn = new Button();
         sendScoreBtn.setText("上传分数");
 
+        Button returnMenu = new Button("返回主菜单");
+        returnMenu.setOnAction(actionEvent -> gameWindow.loadScene(new MenuScene(gameWindow)));
+
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(notification, text, scoreText, sendScoreBtn);
+        vBox.getChildren().addAll(notification, text, scoreText, sendScoreBtn, returnMenu);
         vBox.setAlignment(Pos.CENTER);
 
         borderPane.setCenter(vBox);
