@@ -65,6 +65,8 @@ public class MenuScene extends BaseScene {
         buttonIntro.setOnAction(this::startInto);
         buttonScoreList.setOnAction(this::startScoreList);
         buttonMutiGame.setOnAction(this::startMutiGame);
+        buttonExit.setOnAction(event -> System.exit(0));
+
 
         //Bind the button action to the startGame method in the menu
         button.setOnAction(this::startGame);
