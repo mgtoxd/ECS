@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -78,6 +79,7 @@ public class ChallengeScene extends BaseScene {
         challengePane.getChildren().add(mainPane);
 
         var board = new GameBoard(game.getGrid(), gameWindow.getWidth() / 2, gameWindow.getWidth() / 2);
+        board.getStyleClass().add("gameBox");
         mainPane.setCenter(board);
 
         // 候选
@@ -85,10 +87,18 @@ public class ChallengeScene extends BaseScene {
         Double candidateHeight = Double.valueOf(gameWindow.getHeight() / 4.0);
 
         VBox vBox = new VBox();
+        Text next = new Text("Next One");
+        next.setFont(Font.font("Orbitron", FontWeight.BOLD, 30));
+        // 设置字体颜色为白色
+        next.setFill(Color.WHITE);
         gameShowNext = new GameShowNext(3, 3, candidateWidth, candidateHeight);
+        gameShowNext.setPadding(new Insets(30, 0, 30, 0));
+        Text next_2 = new Text("Next Two");
+        next_2.setFont(Font.font("Orbitron", FontWeight.BOLD, 30));
+        next_2.setFill(Color.WHITE);
         gameShowStore = new GameShowNext(3, 3, candidateWidth, candidateHeight);
-        gameShowStore.setPadding(new Insets(50, 0, 0, 0));
-        vBox.getChildren().addAll(gameShowNext, gameShowStore);
+        gameShowStore.setPadding(new Insets(30, 0, 0, 0));
+        vBox.getChildren().addAll(next, gameShowNext, next_2, gameShowStore);
         vBox.setAlignment(Pos.CENTER);
         vBox.setPadding(new Insets(0, 20, 0, 0));
 
@@ -98,41 +108,50 @@ public class ChallengeScene extends BaseScene {
 
         gameShowNext.show(currPiece);
 
-        VBox btns = new VBox();
-        Button rote = CreateUtil.createRoundButton(10.0, Color.WHITE);
-        btns.getChildren().add(rote);
-        Button storage = CreateUtil.createRoundButton(10.0, Color.BLUE);
-        btns.getChildren().add(storage);
+        HBox btns = new HBox();
+        Button rote = new Button("Rote");
+        rote.getStyleClass().add("game-button");
+        Button storage = new Button("Change");
+        storage.getStyleClass().add("game-button");
+
+        btns.getChildren().addAll(rote, storage);
+        btns.setSpacing(20);
         btns.setAlignment(Pos.CENTER);
 
-        mainPane.setTop(btns);
 
         time = new Text();
         time.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
         time.setFill(Color.WHITE);
-        mainPane.setBottom(time);
+        time.setText("LIFE: 5000");
 
+        HBox btns_2 = new HBox();
         score = new Text();
         score.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
         score.setFill(Color.WHITE);
-        score.setText("SCORE:"+ 0);
-        mainPane.setLeft(score);
-
-
+        score.setText("SCORE: "+ 0);
 
 
         life = new Text();
         life.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
         life.setFill(Color.WHITE);
-        life.setText("LIFE:"+ game.getLife());
-        btns.getChildren().add(life);
+        life.setText("LIFE: "+ game.getLife());
+
+        btns_2.getChildren().addAll(time, life, score);
+        btns_2.setSpacing(20);
+        btns_2.setAlignment(Pos.CENTER);
+
+        VBox vbox = new VBox();
+        vbox.setSpacing(20);
+        vbox.getChildren().addAll(btns, btns_2);
+
+        mainPane.setTop(vbox);
 
 
         game.setScoreListener((observable, oldValue, newValue) -> {
-            score.setText("SCORE:"+ newValue);
+            score.setText("SCORE: "+ newValue);
         });
         game.setLifeListener((observable, oldValue, newValue) -> {
-            life.setText("LIFE:"+ newValue);
+            life.setText("LIFE: "+ newValue);
         });
 
 
@@ -236,7 +255,7 @@ public class ChallengeScene extends BaseScene {
         countdownTimer = new CountDownTimer(countTime, new CountDownTimer.CountDownTimerCallback() {
             @Override
             public void onTick(long remainingMillis) {
-                time.setText("TIME:"+ remainingMillis);
+                time.setText("TIME: "+ remainingMillis);
 //                System.out.println("Remaining millis: " + remainingMillis);
             }
 

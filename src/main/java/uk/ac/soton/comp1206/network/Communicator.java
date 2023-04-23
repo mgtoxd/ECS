@@ -32,54 +32,54 @@ public class Communicator {
      */
     public Communicator(String server) {
 
-//        try {
-//            var socketFactory = new WebSocketFactory();
-//
-//            //Connect to the server
-//            ws = socketFactory.createSocket(server);
-//            ws.connect();
-//            logger.info("Connected to " + server);
-//
-//            //When a message is received, call the receive method
-//            ws.addListener(new WebSocketAdapter() {
-//                @Override
-//                public void onTextMessage(WebSocket websocket, String message) throws Exception {
-//                    Communicator.this.receive(websocket, message);
-//                }
-//                @Override
-//                public void onPingFrame(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
-//                    logger.info("Ping? Pong!");
-//                }
-//            });
-//
-//            //Error handling
-//            ws.addListener(new WebSocketAdapter() {
-//                @Override
-//                public void onTextMessage(WebSocket websocket, String message) throws Exception {
-//                    if(message.startsWith("ERROR")) {
-//                        logger.error(message);
-//                    }
-//                }
-//                @Override
-//                public void handleCallbackError(WebSocket webSocket, Throwable throwable) throws Exception {
-//                    logger.error("Callback Error:" + throwable.getMessage());
-//                    throwable.printStackTrace();
-//                }
-//                @Override
-//                public void onError(WebSocket webSocket, WebSocketException e) throws Exception {
-//                    logger.error("Error:" + e.getMessage());
-//                    e.printStackTrace();
-//                }
-//            });
-//
-//        } catch (Exception e){
-//            logger.error("Socket error: " + e.getMessage());
-//            e.printStackTrace();
-//
-//            Alert error = new Alert(Alert.AlertType.ERROR,"Unable to communicate with the TetrECS server\n\n" + e.getMessage() + "\n\nPlease ensure you are connected to the VPN");
-//            error.showAndWait();
-//            System.exit(1);
-//        }
+        try {
+            var socketFactory = new WebSocketFactory();
+
+            //Connect to the server
+            ws = socketFactory.createSocket(server);
+            ws.connect();
+            logger.info("Connected to " + server);
+
+            //When a message is received, call the receive method
+            ws.addListener(new WebSocketAdapter() {
+                @Override
+                public void onTextMessage(WebSocket websocket, String message) throws Exception {
+                    Communicator.this.receive(websocket, message);
+                }
+                @Override
+                public void onPingFrame(WebSocket webSocket, WebSocketFrame webSocketFrame) throws Exception {
+                    logger.info("Ping? Pong!");
+                }
+            });
+
+            //Error handling
+            ws.addListener(new WebSocketAdapter() {
+                @Override
+                public void onTextMessage(WebSocket websocket, String message) throws Exception {
+                    if(message.startsWith("ERROR")) {
+                        logger.error(message);
+                    }
+                }
+                @Override
+                public void handleCallbackError(WebSocket webSocket, Throwable throwable) throws Exception {
+                    logger.error("Callback Error:" + throwable.getMessage());
+                    throwable.printStackTrace();
+                }
+                @Override
+                public void onError(WebSocket webSocket, WebSocketException e) throws Exception {
+                    logger.error("Error:" + e.getMessage());
+                    e.printStackTrace();
+                }
+            });
+
+        } catch (Exception e){
+            logger.error("Socket error: " + e.getMessage());
+            e.printStackTrace();
+
+            Alert error = new Alert(Alert.AlertType.ERROR,"Unable to communicate with the TetrECS server\n\n" + e.getMessage() + "\n\nPlease ensure you are connected to the VPN");
+            error.showAndWait();
+            System.exit(1);
+        }
     }
 
     /** Send a message to the server

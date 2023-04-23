@@ -31,6 +31,8 @@
     -fx-border-color: black;
     -fx-stroke: black;
     -fx-effect: dropshadow(gaussian, black, 1, 1, 1, 1);
+
+    -fx-translate-y: -30px;
 }
 
 .menuItem:hover {
@@ -38,6 +40,27 @@
 }
 
 .menuItem.selected {
+    -fx-fill: yellow;
+}
+
+.game-button {
+    -fx-fill: white;
+    -fx-font-family: "Orbitron";
+    /* set width */
+    -fx-min-width: 150;
+
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-border-color: black;
+    -fx-stroke: black;
+    -fx-effect: dropshadow(gaussian, black, 1, 1, 1, 1);
+}
+
+.game-button:hover {
+    -fx-fill: yellow;
+}
+
+.game-button.selected {
     -fx-fill: yellow;
 }
 
@@ -215,4 +238,12 @@ TextField {
     -fx-background-color: transparent;
     -fx-background-insets: 0;
     -fx-padding: 0;
+}
+
+.gameOver-notification {
+    -fx-translate-y: 30px;
+}
+
+.gameOver-button {
+    -fx-translate-y: 40px;
 }

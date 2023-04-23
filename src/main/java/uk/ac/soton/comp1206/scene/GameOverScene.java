@@ -1,6 +1,7 @@
 package uk.ac.soton.comp1206.scene;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -44,23 +45,27 @@ public class GameOverScene extends BaseScene {
         root.getChildren().add(borderPane);
 
         Text text = new Text("GameOver");
-        text.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
+        text.setFont(Font.font("Orbitron", FontWeight.BOLD, 50));
         text.setFill(Color.WHITE);
 
         Text scoreText = new Text("Your score:" + score);
-        scoreText.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
+        scoreText.setFont(Font.font("Orbitron", FontWeight.BOLD, 30));
         scoreText.setFill(Color.WHITE);
 
         notification = new TextField("YOUR NAME");
         notification.setMaxWidth(200);
+        notification.getStyleClass().add("gameOver-notification");
 
         Button sendScoreBtn = new Button();
+        sendScoreBtn.getStyleClass().add("gameOver-button");
         sendScoreBtn.setText("Upload score");
 
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(notification, text, scoreText, sendScoreBtn);
-        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(text, scoreText, notification, sendScoreBtn);
+        // vBox 位置：水平居中、距离顶部 20%
+        vBox.setPadding(new Insets(gameWindow.getHeight() * 0.30, 0, 0, 0));
+        vBox.setAlignment(Pos.TOP_CENTER);
 
         borderPane.setCenter(vBox);
 
