@@ -247,3 +247,7 @@ TextField {
 .gameOver-button {
     -fx-translate-y: 40px;
 }
+
+.gameOver-button-menu {
+    -fx-translate-y: 50px;
+}

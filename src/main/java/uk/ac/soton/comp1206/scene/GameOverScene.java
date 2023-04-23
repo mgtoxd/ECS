@@ -61,6 +61,7 @@ public class GameOverScene extends BaseScene {
         sendScoreBtn.setText("Upload score");
 
         Button returnMenu = new Button("返回主菜单");
+        returnMenu.getStyleClass().add("gameOver-button-menu");
         returnMenu.setOnAction(actionEvent -> gameWindow.loadScene(new MenuScene(gameWindow)));
 
 
