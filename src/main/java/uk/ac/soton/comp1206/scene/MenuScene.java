@@ -71,7 +71,7 @@ public class MenuScene extends BaseScene {
         menuVBox.setSpacing(10);
 
         // add button to the VBox        
-        menuVBox.getChildren().addAll(button, buttonIntro, buttonScoreList, buttonMutiGame, buttonExit);
+        menuVBox.getChildren().addAll(button, buttonScoreList, buttonMutiGame, buttonExit);
         mainPane.setCenter(menuVBox);
 
         // set style for the button
@@ -81,7 +81,7 @@ public class MenuScene extends BaseScene {
         buttonExit.getStyleClass().add("menuItem");
         buttonMutiGame.getStyleClass().add("menuItem");
 
-        buttonIntro.setOnAction(this::startInto);
+//        buttonIntro.setOnAction(this::startInto);
         buttonScoreList.setOnAction(this::startScoreList);
         buttonMutiGame.setOnAction(this::startMutiGame);
         buttonExit.setOnAction(event -> System.exit(0));
