@@ -47,7 +47,7 @@ public class GameOverScene extends BaseScene {
         text.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
         text.setFill(Color.WHITE);
 
-        Text scoreText = new Text("your Score:" + score);
+        Text scoreText = new Text("Your score:" + score);
         scoreText.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
         scoreText.setFill(Color.WHITE);
 
@@ -55,7 +55,7 @@ public class GameOverScene extends BaseScene {
         notification.setMaxWidth(200);
 
         Button sendScoreBtn = new Button();
-        sendScoreBtn.setText("上传分数");
+        sendScoreBtn.setText("Upload score");
 
 
         VBox vBox = new VBox();
