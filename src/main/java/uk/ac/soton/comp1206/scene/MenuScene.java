@@ -1,6 +1,7 @@
 package uk.ac.soton.comp1206.scene;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -49,19 +50,37 @@ public class MenuScene extends BaseScene {
         //Awful title
         var title = new Text("TetrECS");
         title.getStyleClass().add("title");
+        // 设置距离顶部 20% 的距离
+        BorderPane.setMargin(title, new Insets(gameWindow.getHeight() * 0.15, 0, 0, 0));
+        // 水平居中 title
         mainPane.setTop(title);
+        BorderPane.setAlignment(title, Pos.TOP_CENTER);
+        
 
         //For now, let us just add a button that starts the game. I'm sure you'll do something way better.
         VBox menuVBox = new VBox();
         menuVBox.setAlignment(Pos.BOTTOM_CENTER);
+        menuVBox.setPadding(new Insets(10));
         var button = new Button("Play");
         var buttonIntro = new Button("Introduction");
         var buttonScoreList = new Button("ScoreList");
         var buttonExit = new Button("Exit");
         var buttonMutiGame = new Button("MutiGame");
-        buttonIntro.setStyle("-fx-background-color: transparent;");
-        menuVBox.getChildren().addAll(button, buttonIntro, buttonExit, buttonScoreList, buttonMutiGame);
+        // buttonIntro.setStyle("-fx-background-color: transparent;");
+
+        menuVBox.setSpacing(10);
+
+        // add button to the VBox        
+        menuVBox.getChildren().addAll(button, buttonIntro, buttonScoreList, buttonMutiGame, buttonExit);
         mainPane.setCenter(menuVBox);
+
+        // set style for the button
+        button.getStyleClass().add("menuItem");
+        buttonIntro.getStyleClass().add("menuItem");
+        buttonScoreList.getStyleClass().add("menuItem");
+        buttonExit.getStyleClass().add("menuItem");
+        buttonMutiGame.getStyleClass().add("menuItem");
+
         buttonIntro.setOnAction(this::startInto);
         buttonScoreList.setOnAction(this::startScoreList);
         buttonMutiGame.setOnAction(this::startMutiGame);

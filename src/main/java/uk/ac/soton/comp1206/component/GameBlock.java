@@ -59,6 +59,9 @@ public class GameBlock extends Canvas {
      */
     private final int y;
 
+    private boolean center = false;
+    private boolean hover = false;
+
     /**
      * The value of this block (0 = empty, otherwise specifies the colour to render as)
      */
@@ -100,6 +103,16 @@ public class GameBlock extends Canvas {
         paint();
     }
 
+    public void center() {
+        this.center = true;
+        paint();
+    }
+
+    public void hover() {
+        this.hover = true;
+        paint();
+    }
+
     /**
      * Handle painting of the block canvas
      */
@@ -110,6 +123,20 @@ public class GameBlock extends Canvas {
         } else {
             //If the block is not empty, paint with the colour represented by the value
             paintColor(COLOURS[value.get()]);
+        }
+        // If center is true, then paint center of piece
+        if (this.center) {
+            var gc = getGraphicsContext2D();
+
+            gc.setFill(Color.rgb(255, 255, 255, 0.5));
+            gc.fillOval(width / 4, height / 4, width / 2, height / 2);
+        }
+        // If hover is true, then paint hover effect
+        if (this.hover) {
+            var gc = getGraphicsContext2D();
+
+            gc.setFill(Color.rgb(204, 204, 204, 0.4));
+            gc.fillRect(0, 0, width, height);
         }
     }
 
@@ -127,7 +154,7 @@ public class GameBlock extends Canvas {
         gc.fillRect(0,0, width, height);
 
         //Border
-        gc.setStroke(Color.BLACK);
+        gc.setStroke(Color.WHITE);
         gc.strokeRect(0,0,width,height);
     }
 

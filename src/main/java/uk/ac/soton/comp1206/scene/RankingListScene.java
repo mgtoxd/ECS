@@ -40,12 +40,15 @@ public class RankingListScene extends BaseScene {
         newText.setFont(Font.font("Orbitron", FontWeight.BOLD, 20));
         newText.setFill(Color.WHITE);
 
-        // 计算新 Text 对象的垂直位置
+        // 计算新 Text 对象的垂直位置，并水平居中
         double textHeight = newText.getLayoutBounds().getHeight();
-        double topOffset = 20.0 + (count.get() - 1) * (textHeight + 10.0);
+        double topOffset = 100.0 + (count.get() - 1) * (textHeight + 10.0);
+        double leftOffset = (anchorPane.getWidth() - newText.getLayoutBounds().getWidth()) / 2.0;
 
         // 设置新 Text 对象的位置
         AnchorPane.setTopAnchor(newText, topOffset);
+        AnchorPane.setLeftAnchor(newText, leftOffset);
+
     }
 
     /**
@@ -68,13 +71,13 @@ public class RankingListScene extends BaseScene {
             if (communication.startsWith("HISCORES")) {
                 logger.info("HISCORES received");
 
-// 创建一个 Map 对象来存储高分记录
+                // 创建一个 Map 对象来存储高分记录
                 Map<String, Integer> highScores = new HashMap<>();
 
-// 将数据按行拆分
+                // 将数据按行拆分
                 String[] lines = communication.split("\\n");
 
-// 遍历每一行数据
+                // 遍历每一行数据
                 for (int i = 0; i < lines.length; i++) {
                     // 如果是第一行数据，删除 "HISCORES " 字符串
                     if (i == 0 && lines[i].startsWith("HISCORES ")) {
@@ -90,11 +93,12 @@ public class RankingListScene extends BaseScene {
                     highScores.put(username, score);
                 }
 
-// 打印高分记录
+                // 打印高分记录
                 for (Map.Entry<String, Integer> entry : highScores.entrySet()) {
                     logger.info(entry.getKey() + ": " + entry.getValue());
 
                     Platform.runLater(() -> {
+                        // 依次添加到屏幕中央
                         addText(anchorPane, count, entry.getKey() + ": " + entry.getValue());
                     });
                 }
