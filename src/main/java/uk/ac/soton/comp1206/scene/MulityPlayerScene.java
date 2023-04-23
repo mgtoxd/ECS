@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,7 +24,6 @@ import uk.ac.soton.comp1206.game.GamePiece;
 import uk.ac.soton.comp1206.ui.GamePane;
 import uk.ac.soton.comp1206.ui.GameWindow;
 import uk.ac.soton.comp1206.util.CountDownTimer;
-import uk.ac.soton.comp1206.util.CreateUtil;
 
 /**
  * The Single Player challenge scene. Holds the UI for the single player challenge mode in the game.
@@ -78,6 +78,7 @@ public class MulityPlayerScene extends BaseScene {
         challengePane.getChildren().add(mainPane);
 
         var board = new GameBoard(game.getGrid(), gameWindow.getWidth() / 2, gameWindow.getWidth() / 2);
+        board.getStyleClass().add("gameBox");
         mainPane.setCenter(board);
 
         // 候选
@@ -85,10 +86,18 @@ public class MulityPlayerScene extends BaseScene {
         Double candidateHeight = Double.valueOf(gameWindow.getHeight() / 4.0);
 
         VBox vBox = new VBox();
+        Text next = new Text("Next One");
+        next.setFont(Font.font("Orbitron", FontWeight.BOLD, 30));
+        // 设置字体颜色为白色
+        next.setFill(Color.WHITE);
         gameShowNext = new GameShowNext(3, 3, candidateWidth, candidateHeight);
+        gameShowNext.setPadding(new Insets(30, 0, 30, 0));
+        Text next_2 = new Text("Next Two");
+        next_2.setFont(Font.font("Orbitron", FontWeight.BOLD, 30));
+        next_2.setFill(Color.WHITE);
         gameShowStore = new GameShowNext(3, 3, candidateWidth, candidateHeight);
-        gameShowStore.setPadding(new Insets(50, 0, 0, 0));
-        vBox.getChildren().addAll(gameShowNext, gameShowStore);
+        gameShowStore.setPadding(new Insets(30, 0, 0, 0));
+        vBox.getChildren().addAll(next, gameShowNext, next_2, gameShowStore);
         vBox.setAlignment(Pos.CENTER);
         vBox.setPadding(new Insets(0, 20, 0, 0));
 
@@ -98,11 +107,13 @@ public class MulityPlayerScene extends BaseScene {
         getPieceFromServ();
 
 
-        VBox btns = new VBox();
-        Button rote = CreateUtil.createRoundButton(10.0, Color.WHITE);
-        btns.getChildren().add(rote);
-        Button storage = CreateUtil.createRoundButton(10.0, Color.BLUE);
-        btns.getChildren().add(storage);
+        HBox btns = new HBox();
+        Button rote = new Button("Rote");
+        rote.getStyleClass().add("game-button");
+        Button storage = new Button("Change");
+        storage.getStyleClass().add("game-button");
+        btns.getChildren().addAll(rote, storage);
+        btns.setSpacing(20);
         btns.setAlignment(Pos.CENTER);
 
         mainPane.setTop(btns);
