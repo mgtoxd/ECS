@@ -64,6 +64,8 @@ public class RoomScene extends BaseScene {
         VBox chatVBox = new VBox();
         BorderPane borderPaneMsg = new BorderPane();
         msgArea = new TextArea();
+        msgArea.setMaxWidth(200);
+        msgArea.setMaxHeight(20);
         HBox msgBtns = new HBox();
 
 

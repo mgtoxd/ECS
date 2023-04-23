@@ -57,7 +57,10 @@ public class MulityScene extends BaseScene {
 
         HBox btnHbox = new HBox();
         TextArea roomName = new TextArea();
+        roomName.setMaxWidth(200);
+        roomName.setMaxHeight(20);
         Button btn = new Button("Create Room");
+        btn.getStyleClass().add("game-button");
         AtomicBoolean host = new AtomicBoolean(false);
 
 
@@ -66,6 +69,9 @@ public class MulityScene extends BaseScene {
             gameWindow.getCommunicator().send("CREATE " + roomName.getText());
         });
         btnHbox.getChildren().addAll(roomName, btn);
+        // btnHbox 底部居中
+        btnHbox.setSpacing(20);
+        btnHbox.setAlignment(javafx.geometry.Pos.CENTER);
         borderPane.setBottom(btnHbox);
 
 
@@ -117,13 +123,21 @@ public class MulityScene extends BaseScene {
         Text text1 = new Text(text);
         text1.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         text1.setFill(Color.WHITE);
+        text1.setWrappingWidth(200);
         Button button1 = new Button("Join " + text);
+        button1.getStyleClass().add("game-button");
         button1.setOnAction(event -> {
             this.joinRoom(text1.getText());
         });
         HBox hbox = new HBox();
         hbox.getChildren().addAll(text1, button1);
+        hbox.setSpacing(20);
+        // 内容垂直居中
+        hbox.setAlignment(javafx.geometry.Pos.CENTER);
         vBox.getChildren().add(hbox);
+        // vBox 位于顶部居中的位置，vBox 距离顶部 30
+        vBox.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+        vBox.getStyleClass().add("gameOver-notification");
     }
 
     private void joinRoom(String text) {
