@@ -30,7 +30,9 @@ import uk.ac.soton.comp1206.util.CountDownTimer;
  */
 public class MulityPlayerScene extends BaseScene {
 
-    private static final Logger logger = LogManager.getLogger(MenuScene.class);
+    private static final Logger logger = LogManager.getLogger(MulityPlayerScene.class);
+    int currX = 2;
+    int currY = 2;
     protected Game game;
     private GamePiece currPiece, storePiece, getPiece;
 
@@ -46,6 +48,7 @@ public class MulityPlayerScene extends BaseScene {
     private Text score;
 
     private Text life;
+    private GameBoard board;
 
     /**
      * Create a new Single Player challenge scene
@@ -77,7 +80,7 @@ public class MulityPlayerScene extends BaseScene {
         var mainPane = new BorderPane();
         challengePane.getChildren().add(mainPane);
 
-        var board = new GameBoard(game.getGrid(), gameWindow.getWidth() / 2, gameWindow.getWidth() / 2);
+        board = new GameBoard(game.getGrid(), gameWindow.getWidth() / 2, gameWindow.getWidth() / 2);
         board.getStyleClass().add("gameBox");
         mainPane.setCenter(board);
 
@@ -145,6 +148,17 @@ public class MulityPlayerScene extends BaseScene {
         //Handle block on gameboard grid being clicked
         board.setOnBlockClick(this::blockClicked);
         board.setOnMouseEntered(this::blockHover);
+        board.setBlockEnterListener((e) -> {
+            board.unhover(board.getBlock(currX, currY));
+            currX = e.getX();
+            currY = e.getY();
+            board.hover(board.getBlock(currX, currY));
+
+        });
+
+        challengePane.setOnKeyPressed(this::keyPressed);
+
+        board.hover(board.getBlock(currX, currY));
 
         rote.setOnMouseClicked(this::roteClicked);
         storage.setOnMouseClicked(this::storageClicked);
@@ -232,12 +246,51 @@ public class MulityPlayerScene extends BaseScene {
 
     // 键盘点击事件
     private void keyPressed(KeyEvent keyEvent) {
-        logger.info("adad");
+        logger.info(keyEvent.getCode());
         switch (keyEvent.getCode()) {
-            case R:
-                logger.info("rotate");
-                currPiece.rotate();
+            case R, SPACE:
+                this.storageClicked(null);
                 break;
+            case OPEN_BRACKET, Q, Z:
+                currPiece.rotate(3);
+                gameShowNext.show(currPiece);
+                break;
+            case CLOSE_BRACKET, E, C:
+                currPiece.rotate();
+                gameShowNext.show(currPiece);
+                break;
+            case LEFT, A:
+                board.unhover(board.getBlock(currX, currY));
+                if (currX > 0) {
+                    currX--;
+                }
+                board.hover(board.getBlock(currX, currY));
+                break;
+            case RIGHT, D:
+                board.unhover(board.getBlock(currX, currY));
+                if (currX < 5) {
+                    currX++;
+                }
+                board.hover(board.getBlock(currX, currY));
+                break;
+            case DOWN, S:
+                board.unhover(board.getBlock(currX, currY));
+                if (currY < 5) {
+                    currY++;
+                }
+                board.hover(board.getBlock(currX, currY));
+                break;
+            case UP, W:
+                board.unhover(board.getBlock(currX, currY));
+                if (currY > 0) {
+                    currY--;
+                }
+                board.hover(board.getBlock(currX, currY));
+                break;
+            case ENTER, X:
+                this.blockClicked(board.getBlock(currX, currY));
+                break;
+
         }
     }
 
@@ -247,6 +300,8 @@ public class MulityPlayerScene extends BaseScene {
      * @param gameBlock the Game Block that was clocked
      */
     private void blockClicked(GameBlock gameBlock) {
+        board.unhover(board.getBlock(currX, currY));
+        board.hover(gameBlock);
         // 如果是第一次点击，开启计时器
         if (countdownTimer == null) {
             resetCountTimer();

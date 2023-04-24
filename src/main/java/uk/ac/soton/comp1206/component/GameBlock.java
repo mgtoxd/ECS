@@ -5,7 +5,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -203,10 +204,15 @@ public class GameBlock extends Canvas {
 
     /**
      * Bind the value of this block to another property. Used to link the visual block to a corresponding block in the Grid.
+     *
      * @param input property to bind the value to
      */
     public void bind(ObservableValue<? extends Number> input) {
         value.bind(input);
     }
 
+    public void unhover() {
+        this.hover = false;
+        paint();
+    }
 }

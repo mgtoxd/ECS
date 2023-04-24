@@ -5,6 +5,7 @@ import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp1206.event.BlockClickedListener;
+import uk.ac.soton.comp1206.event.BlockEnterListener;
 import uk.ac.soton.comp1206.game.Grid;
 
 /**
@@ -20,6 +21,8 @@ import uk.ac.soton.comp1206.game.Grid;
 public class GameBoard extends GridPane {
 
     private static final Logger logger = LogManager.getLogger(GameBoard.class);
+
+    private BlockEnterListener blockEnterListener;
 
     /**
      * Number of columns in the board
@@ -56,11 +59,11 @@ public class GameBoard extends GridPane {
      */
     private BlockClickedListener blockClickedListener;
 
-
     /**
      * Create a new GameBoard, based off a given grid, with a visual width and height.
-     * @param grid linked grid
-     * @param width the visual width
+     *
+     * @param grid   linked grid
+     * @param width  the visual width
      * @param height the visual height
      */
     public GameBoard(Grid grid, double width, double height) {
@@ -72,6 +75,10 @@ public class GameBoard extends GridPane {
 
         //Build the GameBoard
         build();
+    }
+
+    public void setBlockEnterListener(BlockEnterListener blockEnterListener) {
+        this.blockEnterListener = blockEnterListener;
     }
 
     /**
@@ -138,16 +145,22 @@ public class GameBoard extends GridPane {
 
 
         //Add to the GridPane
-        add(block,x,y);
+        add(block, x, y);
 
         //Add to our block directory
         blocks[x][y] = block;
 
         //Link the GameBlock component to the corresponding value in the Grid
-        block.bind(grid.getGridProperty(x,y));
+        block.bind(grid.getGridProperty(x, y));
 
         //Add a mouse click handler to the block to trigger GameBoard blockClicked method
         block.setOnMouseClicked((e) -> blockClicked(e, block));
+
+        block.setOnMouseEntered((e) -> {
+            hover(block);
+            blockEnterListener.blockEntered(block);
+        });
+        block.setOnMouseExited((e) -> unhover(block));
 
         return block;
     }
@@ -168,9 +181,19 @@ public class GameBoard extends GridPane {
     private void blockClicked(MouseEvent event, GameBlock block) {
         logger.info("Block clicked: {}", block);
 
-        if(blockClickedListener != null) {
+        if (blockClickedListener != null) {
             blockClickedListener.blockClicked(block);
         }
     }
+
+    public void hover(GameBlock gameBlock) {
+        gameBlock.hover();
+    }
+
+    public void unhover(GameBlock gameBlock) {
+        gameBlock.unhover();
+    }
+
+
 
 }

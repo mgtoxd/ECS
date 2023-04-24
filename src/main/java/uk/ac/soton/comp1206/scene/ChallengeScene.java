@@ -7,9 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -24,23 +24,25 @@ import uk.ac.soton.comp1206.game.GamePiece;
 import uk.ac.soton.comp1206.ui.GamePane;
 import uk.ac.soton.comp1206.ui.GameWindow;
 import uk.ac.soton.comp1206.util.CountDownTimer;
-import uk.ac.soton.comp1206.util.CreateUtil;
 
 /**
  * The Single Player challenge scene. Holds the UI for the single player challenge mode in the game.
  */
 public class ChallengeScene extends BaseScene {
 
-    private static final Logger logger = LogManager.getLogger(MenuScene.class);
+    private static final Logger logger = LogManager.getLogger(ChallengeScene.class);
+    int currX = 2;
+    int currY = 2;
     protected Game game;
     private GamePiece currPiece, storePiece;
 
     private GameShowNext gameShowNext, gameShowStore;
 
     private CountDownTimer countdownTimer;
-
-    private Integer countTime  = 5000;
+    private Integer countTime = 5000;
     private Float upgradeReductionTimeRatio = 0.1f;
+
+    private GameBoard board;
 
     private Text time;
 
@@ -78,7 +80,7 @@ public class ChallengeScene extends BaseScene {
         var mainPane = new BorderPane();
         challengePane.getChildren().add(mainPane);
 
-        var board = new GameBoard(game.getGrid(), gameWindow.getWidth() / 2, gameWindow.getWidth() / 2);
+        board = new GameBoard(game.getGrid(), gameWindow.getWidth() / 2, gameWindow.getWidth() / 2);
         board.getStyleClass().add("gameBox");
         mainPane.setCenter(board);
 
@@ -155,16 +157,22 @@ public class ChallengeScene extends BaseScene {
         });
 
 
-
-
-
-
         //Handle block on gameboard grid being clicked
         board.setOnBlockClick(this::blockClicked);
         board.setOnMouseEntered(this::blockHover);
+        board.setBlockEnterListener((e) -> {
+            board.unhover(board.getBlock(currX, currY));
+            currX = e.getX();
+            currY = e.getY();
+            board.hover(board.getBlock(currX, currY));
+
+        });
 
         rote.setOnMouseClicked(this::roteClicked);
         storage.setOnMouseClicked(this::storageClicked);
+        challengePane.setOnKeyPressed(this::keyPressed);
+
+        board.hover(board.getBlock(currX, currY));
 
     }
 
@@ -201,12 +209,51 @@ public class ChallengeScene extends BaseScene {
 
     // 键盘点击事件
     private void keyPressed(KeyEvent keyEvent) {
-        logger.info("adad");
+        logger.info(keyEvent.getCode());
         switch (keyEvent.getCode()) {
-            case R :
-                logger.info("rotate");
-                currPiece.rotate();
+            case R, SPACE:
+                this.storageClicked(null);
                 break;
+            case OPEN_BRACKET, Q, Z:
+                currPiece.rotate(3);
+                gameShowNext.show(currPiece);
+                break;
+            case CLOSE_BRACKET, E, C:
+                currPiece.rotate();
+                gameShowNext.show(currPiece);
+                break;
+            case LEFT, A:
+                board.unhover(board.getBlock(currX, currY));
+                if (currX > 0) {
+                    currX--;
+                }
+                board.hover(board.getBlock(currX, currY));
+                break;
+            case RIGHT, D:
+                board.unhover(board.getBlock(currX, currY));
+                if (currX < 5) {
+                    currX++;
+                }
+                board.hover(board.getBlock(currX, currY));
+                break;
+            case DOWN, S:
+                board.unhover(board.getBlock(currX, currY));
+                if (currY < 5) {
+                    currY++;
+                }
+                board.hover(board.getBlock(currX, currY));
+                break;
+            case UP, W:
+                board.unhover(board.getBlock(currX, currY));
+                if (currY > 0) {
+                    currY--;
+                }
+                board.hover(board.getBlock(currX, currY));
+                break;
+            case ENTER, X:
+                this.blockClicked(board.getBlock(currX, currY));
+                break;
+
         }
     }
 
@@ -216,16 +263,18 @@ public class ChallengeScene extends BaseScene {
      * @param gameBlock the Game Block that was clocked
      */
     private void blockClicked(GameBlock gameBlock) {
+        board.unhover(board.getBlock(currX, currY));
+        board.hover(gameBlock);
         // 如果是第一次点击，开启计时器
-        if (countdownTimer==null){
+        if (countdownTimer == null) {
             resetCountTimer();
-        }else {
+        } else {
 
         }
         // 验证是否能放入当前的piece
         int x = gameBlock.getX();
         int y = gameBlock.getY();
-        if (game.canPlace(x, y,currPiece)) {
+        if (game.canPlace(x, y, currPiece)) {
             // 重置计时器
             resetCountTimer();
             // 如果能放入，就放入

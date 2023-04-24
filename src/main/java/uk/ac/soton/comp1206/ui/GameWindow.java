@@ -59,9 +59,9 @@ public class GameWindow {
         setupDefaultScene();
 
         //Setup communicator
-//        communicator = null;
+        communicator = null;
 //        communicator = new Communicator("ws://localhost:8080");
-        communicator = new Communicator("ws://ofb-labs.soton.ac.uk:9700");
+//        communicator = new Communicator("ws://ofb-labs.soton.ac.uk:9700");
 
 //        communicator.addListener(new CommunicationsListener() {
 //            @Override
