@@ -145,6 +145,7 @@ public class MulityPlayerScene extends BaseScene {
             getPieceFromServ();
             storePiece = GamePiece.getEmptyPiece();
             gameShowStore.show(storePiece);
+            storePiece = null;
         });
 
 
