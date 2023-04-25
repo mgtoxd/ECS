@@ -153,7 +153,14 @@ public class ChallengeScene extends BaseScene {
             score.setText("SCORE: "+ newValue);
         });
         game.setLifeListener((observable, oldValue, newValue) -> {
-            life.setText("LIFE: "+ newValue);
+            life.setText("LIFE: " + newValue);
+            game.levelUp();
+            // 刷新候选
+            currPiece = GamePiece.createPiece(game.getCurrLevel());
+            gameShowNext.show(currPiece);
+            game.levelUp();
+            storePiece = GamePiece.createPiece(game.getCurrLevel());
+            gameShowStore.show(storePiece);
         });
 
 

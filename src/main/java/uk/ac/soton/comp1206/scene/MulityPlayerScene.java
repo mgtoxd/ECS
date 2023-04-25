@@ -142,6 +142,9 @@ public class MulityPlayerScene extends BaseScene {
         });
         game.setLifeListener((observable, oldValue, newValue) -> {
             life.setText("LIFE:" + newValue);
+            getPieceFromServ();
+            storePiece = GamePiece.getEmptyPiece();
+            gameShowStore.show(storePiece);
         });
 
 

@@ -1,14 +1,13 @@
 package uk.ac.soton.comp1206.game;
 
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp1206.component.GameBlock;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The Game class handles the main logic, state and properties of the TetrECS game. Methods to manipulate the game state
@@ -51,6 +50,9 @@ public class Game {
     // 升级
     public void levelUp() {
         currLevel++;
+        if (currLevel > 14) {
+            currLevel = new Random().nextInt(15);
+        }
     }
 
     /**

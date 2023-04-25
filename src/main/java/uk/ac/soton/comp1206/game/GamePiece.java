@@ -211,14 +211,19 @@ public class GamePiece {
     }
 
 
+    public static GamePiece getEmptyPiece() {
+        int[][] blocks = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+        return new GamePiece("Empty", blocks, -1);
+    }
+
     /**
      * Return the string representation of this piece
+     *
      * @return the name of this piece
      */
     public String toString() {
         return this.name;
     }
-
 
 
 }
